@@ -1,5 +1,0 @@
-renpy.geometry renpy.texture
-renpy.solid
-renpy.ftl
-renpy.texture
-renpy.geometry renpy.solid
