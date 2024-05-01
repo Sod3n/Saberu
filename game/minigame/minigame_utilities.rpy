@@ -65,3 +65,68 @@ init -100 python:
                 filtered_actions.append(action_tuple)
 
         return filtered_actions
+    
+    is_show_next_actions = False
+
+    def show_next_actions(action):
+        print("HOVERED")
+        if store.is_show_next_actions == False:
+            store.is_show_next_actions = True
+    
+    def hide_next_actions(action):
+        print("UNHOVERED")
+        if store.is_show_next_actions == True:
+            store.is_show_next_actions = False
+
+
+    def get_actions_after_action(action):
+        if action == "short_hit":
+            return [ 
+                to_tuple("block"), 
+                to_tuple("dodge"), 
+                to_tuple("jab"), 
+            ]
+
+        if action == "parry":
+            return [ 
+                to_tuple("jab"), 
+                to_tuple("pressure_hit"), 
+                to_tuple("short_hit"),
+            ]
+        
+        if action == "pressure_hit":
+            return [ 
+                to_tuple("dodge"), 
+                to_tuple("parry"), 
+                to_tuple("short_hit"), 
+            ]
+
+        if action == "jab":
+            return [ 
+                to_tuple("parry"), 
+                to_tuple("pressure_hit"), 
+                to_tuple("short_hit"), 
+            ]
+
+        if action == "hard_hit":
+            return [ 
+                to_tuple("block"), 
+                to_tuple("jab"), 
+                to_tuple("parry"), 
+            ]
+
+        if action == "dodge":
+            return [ 
+                to_tuple("block"), 
+                to_tuple("jab"), 
+                to_tuple("pressure_hit"), 
+            ]
+        
+        if action == "block":
+            return [ 
+                to_tuple("hard_hit"), 
+                to_tuple("jab"), 
+                to_tuple("parry"), 
+            ]
+
+    

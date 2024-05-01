@@ -10,7 +10,7 @@ init python:
     enemy_char = GCharacter((1920, 1080), "sprite.png", 6, "sprite2.png", "sprite3.png", 0.2)
     do_action = False
 
-    next_action = random_first_aciton
+    next_action = "parry"
 
 screen minigame:
     add player_char
@@ -18,7 +18,6 @@ screen minigame:
 
 label minigame_start:
     show screen minigame
-
     $ player_char.look_at(enemy_char)
     $ enemy_char.look_at(player_char)
     $ renpy.redraw(player_char, 0)
