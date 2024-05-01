@@ -52,6 +52,8 @@ init -100 python:
 
         p.reset_invincible()
         e.reset_invincible()
+        p.off_balance_position = 0
+        e.off_balance_position = 0
 
     def random_action(e):
         return random.choice(filter_actions(minigame_actions_tuple, e))[1]
