@@ -38,6 +38,8 @@ init -5 python:
             self.lose_balance_character = renpy.displayable(lose_balance_character)
             self.in_danger_character = renpy.displayable(in_danger_character)
 
+            self.char_width, self.char_height = renpy.image_size(character)
+
         def render(self, width, height, st, at):
             if self.position < 1:
                 self.position = 1
@@ -53,14 +55,9 @@ init -5 python:
             ht = Transform(child=self.health_image, function = GCharacter.trigger_redraw)
 
             ht.zoom = self.zoom
-            ht.xanchor = 0.5
-            ht.yanchor = 0.5
 
             # Create a render from the health_image.
             health_image_render = renpy.render(ht, width, height, st, at)
-
-            # Get the size of the health_image.
-            self.width, self.height = health_image_render.get_size()
 
             if not self.is_in_balance:
                 ct = Transform(child=self.lose_balance_character)
@@ -70,8 +67,6 @@ init -5 python:
                 ct = Transform(child=self.character)
             
             ct.zoom = self.zoom
-            ct.xanchor = 0.5
-            ct.yanchor = 0.5
 
             if(self.look_direction == GCharacter.LookDirection.LEFT):
                 ct.xzoom = -1.0
@@ -81,12 +76,15 @@ init -5 python:
             # Create the render we will return.
             render = renpy.Render(self.width, self.height)
 
-            # Blit (draw) the health_image's render to our render.
-            render.blit(health_image_render, self.current_position)
-
             x, y = self.current_position
+            x -= self.char_width / 2 * self.zoom
+            y -= self.char_height / 2 * self.zoom
             # Blit (draw) the health_image's render to our render.
-            render.blit(character_render, (x - 100 * self.zoom, y + 70 * self.zoom))
+            render.blit(health_image_render, (x + 100 * self.zoom, y - 70 * self.zoom))
+
+            
+            # Blit (draw) the health_image's render to our render.
+            render.blit(character_render, (x, y))
             
             # Return the render.
             return render
@@ -129,8 +127,8 @@ init -5 python:
 
         def lerp_current_position(self):
             cx, cy = self.current_position
-            x, y = positions[self.position]
-            lx, ly = positions[self.last_position]
+            x, y = cell_positions[self.position]
+            lx, ly = cell_positions[self.last_position]
             
             if self.position != self.current_position:
                 dx = x - cx
@@ -139,7 +137,7 @@ init -5 python:
                 cy = cy + dy * 0.1
                 self.current_position = (cx, cy)
             else:
-                self.current_position = positions[self.position]
+                self.current_position = cell_positions[self.position]
                 self.last_position = self.position
 
         def trigger_redraw(trans, st, at):

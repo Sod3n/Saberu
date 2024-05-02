@@ -12,9 +12,28 @@ init python:
 
     next_action = "parry"
 
+    cell_positions = {
+        1: (540, 150),
+        2: (660, 150),
+        3: (780, 150),
+        4: (900, 150),
+        5: (1020, 150),
+        6: (1140, 150),
+        7: (1260, 150),
+        8: (1380, 150)
+    }
+
+
 screen minigame:
     add player_char
     add enemy_char
+    for i in store.cell_positions:
+        add "cell.png":
+            xpos store.cell_positions[i][0] 
+            ypos store.cell_positions[i][1] + 120
+            yanchor 0.5
+            xanchor 0.5
+            zoom 2
 
 label minigame_start:
     show screen minigame
