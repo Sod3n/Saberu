@@ -243,7 +243,7 @@ screen horizontal_choice(items):
                     textbutton i[0]:
                         xanchor 0
                         text_size 24
-                        xminimum int(1920 / len(items))
+                        xminimum int(1920 / len(get_actions_after_action(next_action)))
         hbox:
             xfill True
             for i in items:

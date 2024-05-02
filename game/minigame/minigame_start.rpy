@@ -22,6 +22,7 @@ init python:
         7: (1260, 150),
         8: (1380, 150)
     }
+    minigame_saved_rollback_limit = 0
 
 
 screen minigame:
@@ -36,6 +37,15 @@ screen minigame:
             zoom 2
 
 label minigame_start:
+    $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
+    $ enemy_char = GCharacter((1920, 1080), "sprite.png", 6, "sprite2.png", "sprite3.png", 0.2)
+    $ minigame_used_pressure_hit_sequencly = 0
+    $ minigame_enemy_def_success = False
+    $ do_action = False
+    $ next_action = "parry"
+    $ config.rollback_enabled = False
+    $ store.minigame_saved_rollback_limit = config.hard_rollback_limit
+    $ config.hard_rollback_limit = 0 
     show screen minigame
     $ player_char.look_at(enemy_char)
     $ enemy_char.look_at(player_char)

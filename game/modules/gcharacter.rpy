@@ -14,7 +14,9 @@ init -5 python:
         health = 5
 
         next_position = 3
+        blocked_position = 3
         last_position = 3
+        last_stable_position = 3
         position = 3
 
         off_balance_position = 0
@@ -23,6 +25,12 @@ init -5 python:
         is_in_danger = False
         is_invincible_to_common_damage = False
         is_invincible_to_damage = False
+
+        last_time = 0.0
+        delta = 0.0
+        timer = 1.0
+        last_health = 5
+        action = None
 
 
         def __init__(self, size, character, position, lose_balance_character, in_danger_character, zoom = 1.0, **kwargs):
@@ -36,6 +44,8 @@ init -5 python:
             self.width, self.height = size
             self.position = position
             self.next_position = position
+            self.blocked_position = position
+            self.last_stable_position = position
             self.zoom = zoom
             self.lose_balance_character = renpy.displayable(lose_balance_character)
             self.in_danger_character = renpy.displayable(in_danger_character)
@@ -90,11 +100,6 @@ init -5 python:
             
             # Return the render.
             return render
-        
-        last_time = 0.0
-        delta = 0.0
-        timer = 1.0
-        last_health = 5
 
         def event(self, ev, x, y, st):
             # self.delta = st - self.last_time
@@ -152,25 +157,57 @@ init -5 python:
                 self.look_direction = GCharacter.LookDirection.LEFT
 
         def move(self, move_value, e):
+            in_danger_before = self.is_on_danger_position()
+
             self.position += move_value
 
-            if self.position == 1 or self.position == 2 or self.position == 7 or self.position == 8:
-                self.is_in_danger = True
-            else:
-                self.is_in_danger = False
+            is_in_danger = self.is_on_danger_position()
+
+            if not in_danger_before and is_in_danger:
+                self.is_in_balance = False
+            
+            self.is_in_danger = is_in_danger
+
             return False
+
+        def is_on_danger_position(self):
+            return self.position == 1 or self.position == 2 or self.position == 7 or self.position == 8
 
         def move_and_push(self, move_value, char_to_push):
             self.move(move_value, char_to_push)
             if char_to_push.next_position == self.position:
                 if char_to_push.next_position == 8 or char_to_push.next_position == 1:
                     move_value = move_value * -1
+                char_to_push.blocked_position = char_to_push.next_position
                 char_to_push.next_position += math.copysign(1, move_value)
                 return True
             return False    
 
         def move_and_push_forward(self, move_value, char_to_push):
             self.move_and_push(move_value * self.forward(), char_to_push)
+
+        was_pushed = False
+
+        def move_to_next_pos(self, e):
+            if self.next_position - self.position != 0:
+                if self.move_and_push(self.next_position - self.position, e):
+                    e.was_pushed = True
+                self.next_position = self.position
+                self.blocked_position = self.position
+
+        def move_to_blocked_pos(self, e):
+            if self.blocked_position != self.next_position:
+                self.move(self.blocked_position - self.position, e)
+                return True
+            return False
+        
+        def set_next_position(self, value):
+            if value > 8:
+                value = 8
+            if value < 1:
+                value = 1
+            self.next_position = value
+            self.blocked_position = value
 
         def forward(self):
             if self.look_direction == GCharacter.LookDirection.LEFT:
@@ -185,7 +222,7 @@ init -5 python:
 
         def take_damage_at_position(self, value, position, is_common = True):
             if self.position == position:
-                return self.take_damage(value)
+                return self.take_damage(value, is_common)
             return False
 
         def common_invincible(self):
@@ -198,7 +235,23 @@ init -5 python:
             self.is_invincible_to_damage = False
             self.is_invincible_to_common_damage = False
 
-        action = None
+        def make_move_action(self, e):
+            if self.action == "dodge":
+                self.set_next_position(self.next_position + -1 * self.forward())
+
+            if self.action == "parry":
+                self.set_next_position(self.next_position + 1 * self.forward())
+
+            if self.action == "jab":
+                self.set_next_position(self.next_position + -1 * self.forward())
+
+            if self.action == "pressure_hit":
+                self.set_next_position(self.next_position + 2 * self.forward())
+
+            if self.action == "short_hit":
+                self.set_next_position(self.next_position + 1 * self.forward())
+                
+            return False
 
         def make_def_action(self, e):
             if self.action == "block":
@@ -206,30 +259,15 @@ init -5 python:
                 return True
 
             if self.action == "dodge":
-                self.off_balance_position = self.position
-                self.next_position += -1 * self.forward()
+                self.off_balance_position = self.position + 1 * self.forward()
                 return True
 
             if self.action == "parry":
                 self.hard_invincible()
-                self.next_position += 1 * self.forward()
-                self.off_balance_position = self.next_position
+                self.off_balance_position = self.position
                 return True
-
-            if self.action == "jab":
-                self.next_position += -1 * self.forward()
-
-            if self.action == "pressure_hit":
-                self.next_position += 2 * self.forward()
                 
             return False
-
-        was_pushed = False
-
-        def move_to_next_pos(self, e):
-            if self.next_position - self.position != 0:
-                self.was_pushed = self.move_and_push(self.next_position - self.position, e)
-                self.next_position = self.position
 
         def make_attack_action(self, e):
             if self.action == "hard_hit":
@@ -267,10 +305,25 @@ init -5 python:
                 e.take_damage_at_position(1, dmg_position)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
+
+                dmg_position = self.position + 2 * self.forward()
+                e.take_damage_at_position(1, dmg_position)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
                 return True
+
+            if self.action == "shoot":
+                dmg_position = self.position + 1 * self.forward()
+                e.take_damage_at_position(3, dmg_position, False)
+                dmg_position = self.position + 2 * self.forward()
+                e.take_damage_at_position(3, dmg_position, False)
+                dmg_position = self.position + 3 * self.forward()
+                e.take_damage_at_position(3, dmg_position, False)
+                return True
+
             return False
                 
-        def can_perform_action(self, action):
+        def can_perform_action(self, action, e):
             if action in ("hard_hit", "short_hit", "pressure_hit", "jab"):
                 if not self.is_in_balance:
                     return False
@@ -278,5 +331,24 @@ init -5 python:
             if action in ("jab", "dodge"):
                 if self.is_in_danger:
                     return False
-                    
+
+            if action in ("parry") and self.distance_to(e) == 1:
+                return False
+            
             return True
+
+        def distance_to(self, e):
+            return abs(e.position - self.position)
+
+        def reset(self):
+            self.health = 5
+            self.next_position = 3
+            self.blocked_position = 3
+            self.last_position = 3
+            self.last_stable_position = 3
+            self.position = 3
+            self.off_balance_position = 0
+            self.is_in_balance = True
+            self.is_in_danger = False
+            self.is_invincible_to_common_damage = False
+            self.is_invincible_to_damage = False
