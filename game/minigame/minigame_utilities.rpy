@@ -9,7 +9,7 @@ init -100 python:
         "block": "Принять защитную стойку",
         "dodge": "Увернуться",
         "hard_hit": "Ударить в полную силу",
-        "jab": "Отступить, колющим ударом",
+        "jab": "Отступить колющим ударом",
         "parry": "Сделать шаг вперёд, парируя",
         "pressure_hit": "Броситься впёред",
         "short_hit": "Свершить атаку",
@@ -36,6 +36,12 @@ init -100 python:
 
         last_p_in_danger = p.is_in_danger
         last_e_in_danger = e.is_in_danger
+
+        p.last_stable_position = p.position
+        e.last_stable_position = e.position
+
+        p.is_last_was_crit = False
+        e.is_last_was_crit = False
 
         if p.make_move_action(e):
             player(minigame_actions[p.action])
@@ -68,12 +74,18 @@ init -100 python:
         if p.make_attack_action(e):
             player(minigame_actions[p.action])
 
+        if e.is_last_was_crit:
+            narrator("Удар оказался сокрушительным.")
+
         if not p.is_in_balance:
             store.minigame_enemy_def_success = True
             player("Меня выбили из равновесия. Защита - единственный оставшийся вариант.")
 
         if e.make_attack_action(p):
             enemy(minigame_actions[e.action])
+
+        if p.is_last_was_crit:
+            narrator("Удар оказался сокрушительным.")
         
         if not e.is_in_balance:
             player("Кажется, враг потерял боевой потенциал. Нельзя останавливаться на этом")

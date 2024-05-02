@@ -2,6 +2,7 @@ init -5 python:
 
     from enum import Enum
     import math
+    import random
 
     class GCharacter(renpy.Displayable):
 
@@ -31,6 +32,8 @@ init -5 python:
         timer = 1.0
         last_health = 5
         action = None
+        
+        is_last_was_crit = False
 
 
         def __init__(self, size, character, position, lose_balance_character, in_danger_character, zoom = 1.0, **kwargs):
@@ -217,7 +220,14 @@ init -5 python:
         def take_damage(self, value, is_common = True):
             if (self.is_invincible_to_common_damage and is_common) or self.is_invincible_to_damage:
                     return False
+
+            crit_chance = random.randint(0, 100)
+
+            if crit_chance >= 95:
+                self.health -= value
+                self.is_last_was_crit = True
             self.health -= value
+
             return True
 
         def take_damage_at_position(self, value, position, is_common = True):
@@ -280,34 +290,36 @@ init -5 python:
 
             if self.action == "short_hit":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(1, dmg_position)
+                e.take_damage_at_position(1, dmg_position, True)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
                 return True
 
             if self.action == "pressure_hit":
-                dmg_position = self.position + -1 * self.forward()
-                e.take_damage_at_position(1, dmg_position)
-                if e.off_balance_position == dmg_position:
-                    self.is_in_balance = False
-
-                dmg_position = e.position
-
-                if e.was_pushed or self.was_pushed:
-                    e.take_damage(1)
+                damage_maked = False
+                print(self.last_stable_position)
+                print(self.position + 1 * self.forward())
+                for i in range(int(self.last_stable_position), int(self.position + 1 * self.forward()), self.forward()):
+                    dmg_position = i
+                    if e.take_damage_at_position(1, dmg_position, True):
+                        damage_maked = True
+                    if e.off_balance_position == dmg_position:
+                        self.is_in_balance = False
                 
-                if e.off_balance_position == dmg_position:
-                    self.is_in_balance = False
+
+                if (e.was_pushed or self.was_pushed) and not damage_maked:
+                    e.take_damage(1, True)
+                
                 return True
 
             if self.action == "jab":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(1, dmg_position)
+                e.take_damage_at_position(1, dmg_position, True)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
 
                 dmg_position = self.position + 2 * self.forward()
-                e.take_damage_at_position(1, dmg_position)
+                e.take_damage_at_position(1, dmg_position, True)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
                 return True
