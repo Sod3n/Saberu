@@ -7,7 +7,7 @@ init python:
     
     random_first_aciton = random.choice(minigame_actions_tuple)[1]
     player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
-    enemy_char = GCharacter((1920, 1080), "sprite.png", 6, "sprite2.png", "sprite3.png", 0.2)
+    enemy_char = GCharacter((1920, 1080), "enemy.jpg", 6, "enemy2.jpg", "enemy3.jpg", 0.2)
     do_action = False
 
     next_action = "parry"
@@ -46,7 +46,7 @@ screen minigame:
 
 label minigame_start:
     $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
-    $ enemy_char = GCharacter((1920, 1080), "sprite.png", 6, "sprite2.png", "sprite3.png", 0.2)
+    $ enemy_char = GCharacter((1920, 1080), "enemy.jpg", 6, "enemy2.jpg", "enemy3.jpg", 0.2)
     $ minigame_used_pressure_hit_sequencly = 0
     $ minigame_enemy_def_success = False
     $ do_action = False
