@@ -28,13 +28,21 @@ init python:
 screen minigame:
     add player_char
     add enemy_char
-    for i in store.cell_positions:
-        add "cell.png":
-            xpos store.cell_positions[i][0] 
-            ypos store.cell_positions[i][1] + 120
-            yanchor 0.5
-            xanchor 0.5
-            zoom 2
+    for idi, i in enumerate(store.cell_positions):
+        if idi < 2 or idi > 5:
+            add "edge_cell.png":
+                xpos store.cell_positions[i][0] 
+                ypos store.cell_positions[i][1] + 120
+                yanchor 0.5
+                xanchor 0.5
+                zoom 2
+        else:
+            add "cell.png":
+                xpos store.cell_positions[i][0] 
+                ypos store.cell_positions[i][1] + 120
+                yanchor 0.5
+                xanchor 0.5
+                zoom 2
 
 label minigame_start:
     $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
