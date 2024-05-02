@@ -13,6 +13,7 @@ init -5 python:
 
         health = 5
 
+        next_position = 3
         last_position = 3
         position = 3
 
@@ -34,6 +35,7 @@ init -5 python:
             self.health_image = renpy.displayable(self.get_hp_image(health = self.health))
             self.width, self.height = size
             self.position = position
+            self.next_position = position
             self.zoom = zoom
             self.lose_balance_character = renpy.displayable(lose_balance_character)
             self.in_danger_character = renpy.displayable(in_danger_character)
@@ -160,12 +162,12 @@ init -5 python:
 
         def move_and_push(self, move_value, char_to_push):
             self.move(move_value, char_to_push)
-            if char_to_push.position == self.position:
-                if char_to_push.position == 8 or char_to_push.position == 1:
+            if char_to_push.next_position == self.position:
+                if char_to_push.next_position == 8 or char_to_push.next_position == 1:
                     move_value = move_value * -1
-                char_to_push.position += math.copysign(1, move_value)
+                char_to_push.next_position += math.copysign(1, move_value)
                 return True
-            return False
+            return False    
 
         def move_and_push_forward(self, move_value, char_to_push):
             self.move_and_push(move_value * self.forward(), char_to_push)
@@ -205,19 +207,30 @@ init -5 python:
 
             if self.action == "dodge":
                 self.off_balance_position = self.position
-                self.move_and_push_forward(-1, e)
+                self.next_position += -1 * self.forward()
                 return True
 
             if self.action == "parry":
                 self.hard_invincible()
-                self.move_and_push_forward(1, e)
-                self.off_balance_position = self.position
+                self.next_position += 1 * self.forward()
+                self.off_balance_position = self.next_position
                 return True
 
             if self.action == "jab":
-                self.move_and_push_forward(-1, e)
+                self.next_position += -1 * self.forward()
+
+            if self.action == "pressure_hit":
+                self.next_position += 2 * self.forward()
+                
             return False
-        
+
+        was_pushed = False
+
+        def move_to_next_pos(self, e):
+            if self.next_position - self.position != 0:
+                self.was_pushed = self.move_and_push(self.next_position - self.position, e)
+                self.next_position = self.position
+
         def make_attack_action(self, e):
             if self.action == "hard_hit":
                 dmg_position = self.position + 1 * self.forward()
@@ -235,17 +248,18 @@ init -5 python:
                 return True
 
             if self.action == "pressure_hit":
-                dmg_position = self.position + 1 * self.forward()
+                dmg_position = self.position + -1 * self.forward()
                 e.take_damage_at_position(1, dmg_position)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
 
-                dmg_position = self.position + 2 * self.forward()
-                e.take_damage_at_position(1, dmg_position)
+                dmg_position = self.position
+
+                if e.was_pushed:
+                    e.take_damage(1)
+                
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
-
-                self.move_and_push_forward(2, e)
                 return True
 
             if self.action == "jab":

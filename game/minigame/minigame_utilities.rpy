@@ -32,14 +32,12 @@ init -100 python:
         if p.make_def_action(e):
             player(minigame_actions[p.action])
 
-        p.look_at(e)
-        e.look_at(p)
-
         if e.make_def_action(p):
             enemy(minigame_actions[e.action])
 
-        p.look_at(e)
-        e.look_at(p)
+        p.move_to_next_pos(e)
+        e.move_to_next_pos(p)
+        p.move_to_next_pos(e) # if enemy push player
         
         if p.make_attack_action(e):
             player(minigame_actions[p.action])
@@ -54,6 +52,8 @@ init -100 python:
         e.reset_invincible()
         p.off_balance_position = 0
         e.off_balance_position = 0
+        p.was_pushed = False
+        e.was_pushed = False
 
     def random_action(e):
         return random.choice(filter_actions(minigame_actions_tuple, e))[1]
