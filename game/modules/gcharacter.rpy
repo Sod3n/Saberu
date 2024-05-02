@@ -291,9 +291,9 @@ init -5 python:
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
 
-                dmg_position = self.position
+                dmg_position = e.position
 
-                if e.was_pushed:
+                if e.was_pushed or self.was_pushed:
                     e.take_damage(1)
                 
                 if e.off_balance_position == dmg_position:
@@ -339,16 +339,3 @@ init -5 python:
 
         def distance_to(self, e):
             return abs(e.position - self.position)
-
-        def reset(self):
-            self.health = 5
-            self.next_position = 3
-            self.blocked_position = 3
-            self.last_position = 3
-            self.last_stable_position = 3
-            self.position = 3
-            self.off_balance_position = 0
-            self.is_in_balance = True
-            self.is_in_danger = False
-            self.is_invincible_to_common_damage = False
-            self.is_invincible_to_damage = False

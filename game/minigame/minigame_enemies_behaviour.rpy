@@ -29,7 +29,7 @@ init -10 python:
             store.minigame_used_pressure_hit_sequencly = 0
             if p.distance_to(e) > 1:
                 return "parry"
-            elif not e.is_in_danger:
+            elif not e.is_in_danger and e.is_in_balance:
                 return "jab"
 
         if store.minigame_enemy_behaviour == 2:

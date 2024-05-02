@@ -6,13 +6,13 @@ init -100 python:
     minigame_lose_scene = "start"
 
     minigame_actions = {
-        "block": "Выставить меч перед собой",
-        "dodge": "Отступить",
+        "block": "Принять защитную стойку",
+        "dodge": "Увернуться",
         "hard_hit": "Ударить в полную силу",
-        "jab": "Нанести колющий удар",
+        "jab": "Отступить, колющим ударом",
         "parry": "Сделать шаг вперёд, парируя",
         "pressure_hit": "Броситься впёред",
-        "short_hit": "Совершить атаку",
+        "short_hit": "Свершить атаку",
         "wait": "Ожидать лучшей возможности",
         "shoot": "Нанести гига атаку"
     }
@@ -34,6 +34,9 @@ init -100 python:
         p.is_in_balance = True
         e.is_in_balance = True
 
+        last_p_in_danger = p.is_in_danger
+        last_e_in_danger = e.is_in_danger
+
         if p.make_move_action(e):
             player(minigame_actions[p.action])
 
@@ -50,6 +53,12 @@ init -100 python:
 
         p.move_to_next_pos(e) # if enemy push player
 
+        if p.is_in_danger and not last_p_in_danger:
+            player("Ещё шаг назад и я труп. Надо быть осторожнее.")
+
+        if e.is_in_danger and not last_e_in_danger:
+            player("Враг прижат к стенке. Ещё чуть-чуть...")
+
         if p.make_def_action(e):
             player(minigame_actions[p.action])
 
@@ -61,9 +70,13 @@ init -100 python:
 
         if not p.is_in_balance:
             store.minigame_enemy_def_success = True
+            player("Меня выбили из равновесия. Защита - единственный оставшийся вариант.")
 
         if e.make_attack_action(p):
             enemy(minigame_actions[e.action])
+        
+        if not e.is_in_balance:
+            player("Кажется, враг потерял боевой потенциал. Нельзя останавливаться на этом")
 
         p.look_at(e)
         e.look_at(p)
