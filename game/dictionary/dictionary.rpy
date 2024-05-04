@@ -3,7 +3,7 @@ init python:
     dictionary_statement = []
 
     is_dictionary_new_word = False
-    last_word_added = 6.0
+    last_word_added = -10000.0
     is_dictionary_showed = False
 
     def show_dictionary():
@@ -24,7 +24,7 @@ init python:
             store.is_dictionary_new_word = False
 
         delay = st - store.last_word_added
-        print(delay)
+
         if delay <= 0.5:
             xpos = (1920) - int(200 * delay / 0.5)
         elif delay <= 3:

@@ -14,7 +14,6 @@ init -10 python:
     
 
     def get_enemy_action(e, p):
-        print(store.minigame_used_pressure_hit_sequencly)
         if store.minigame_enemy_behaviour == 0:
             if p.distance_to(e) > 1 and e.is_in_balance:
                 return "short_hit"
@@ -71,7 +70,7 @@ init -10 python:
                 e.set_crit_chance(70)
                 return "jab"
             
-            if minigame_used_pressure_hit_sequencly < 1:
+            if minigame_used_pressure_hit_sequencly < 1 and e.is_in_balance:
                 return "pressure_hit"
 
             return "wait"
@@ -111,5 +110,11 @@ init -10 python:
                 return "throw"
 
             return "wait"
-            
+        
+        if store.minigame_enemy_behaviour == 7:
+
+            if p.distance_to(e) == 1 and e.is_in_balance:
+                return "nettle_attack"
+
+            return "nettle_wait"
         

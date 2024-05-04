@@ -294,6 +294,10 @@ init -5 python:
                 self.common_invincible()
                 return True
 
+            if self.action == "nettle_wait":
+                self.common_invincible()
+                return True
+
             if self.action == "heal_prepare":
                 return True
 
@@ -329,6 +333,13 @@ init -5 python:
                 return True
 
             if self.action == "short_hit":
+                dmg_position = self.position + 1 * self.forward()
+                e.take_damage_at_position(1, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
+                return True
+
+            if self.action == "nettle_attack":
                 dmg_position = self.position + 1 * self.forward()
                 e.take_damage_at_position(1, dmg_position, True, self)
                 if e.off_balance_position == dmg_position:
