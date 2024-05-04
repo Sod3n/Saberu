@@ -212,7 +212,6 @@ screen choice(items):
         for i in items:
             textbutton i.caption action i.action
 
-
 style choice_vbox is vbox
 style choice_button is button
 style choice_button_text is button_text
@@ -229,6 +228,45 @@ style choice_button is default:
 
 style choice_button_text is default:
     properties gui.text_properties("choice_button")
+
+screen horizontal_choice(items):
+    default next_action = None
+    
+    style_prefix "horizontal_choice"
+    vbox:
+        yanchor 1.0
+        ypos 0.7
+        if next_action != None:
+            hbox:
+                xfill True
+                for i in get_actions_after_action(next_action):
+                    textbutton i[0]:
+                        xanchor 0
+                        text_size 24
+                        xminimum int(1920 / len(get_actions_after_action(next_action)))
+        hbox:
+            xfill True
+            for i in items:
+                textbutton i.caption action i.action hovered SetScreenVariable("next_action", i[1].value) unhovered SetScreenVariable("next_action", None):
+                    xanchor 0
+                    xminimum int(1920 / len(items))
+
+style horizontal_choice_hbox is hbox
+style horizontal_choice_button is button
+style horizontal_choice_button_text is button_text
+
+style horizontal_choice_hbox:
+    yalign 0.7
+    xfill True
+    spacing 0
+
+style horizontal_choice_button is default:
+    properties gui.button_properties("horizontal_choice_button")
+
+
+
+style horizontal_choice_button_text is default:
+    properties gui.text_properties("horizontal_choice_button")
 
 
 ## Экран быстрого меню #########################################################
@@ -256,7 +294,7 @@ screen quick_menu():
             textbutton _("Сохранить") action ShowMenu('save')
             textbutton _("Б.Сохр") action QuickSave()
             textbutton _("Б.Загр") action QuickLoad()
-            textbutton _("Опции") action ShowMenu('preferences')
+            textbutton _("Словарь") action If(renpy.get_screen("dictionary_screen"), true=Hide("dictionary_screen"), false=Show("dictionary_screen"))
 
 
 ## Данный код гарантирует, что экран быстрого меню будет показан в игре в любое

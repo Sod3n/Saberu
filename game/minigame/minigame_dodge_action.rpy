@@ -5,12 +5,6 @@ label minigame_dodge_action:
         $ perform_action_in_order(player_char, enemy_char)
     $ do_action = True
 
-    $ narrator("Как мне поступить?", interact=False)
-    $ next_action = renpy.display_menu(filter_actions([ 
-        to_tuple("block"), 
-        to_tuple("jab"), 
-        to_tuple("pressure_hit"), 
-    ], player_char))
-    $ renpy.jump("minigame_before_action")
+    $ renpy.jump("minigame_action_menu")
 
     

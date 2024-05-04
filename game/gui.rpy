@@ -212,13 +212,27 @@ define gui.quick_button_text_selected_color = gui.accent_color
 define gui.choice_button_width = 1185
 define gui.choice_button_height = None
 define gui.choice_button_tile = False
-define gui.choice_button_borders = Borders(150, 8, 150, 8)
+define gui.choice_button_borders = Borders(20, 8, 20, 8)
 define gui.choice_button_text_font = gui.text_font
 define gui.choice_button_text_size = gui.text_size
 define gui.choice_button_text_xalign = 0.5
 define gui.choice_button_text_idle_color = '#888888'
 define gui.choice_button_text_hover_color = "#ffffff"
 define gui.choice_button_text_insensitive_color = '#8888887f'
+
+
+## Кнопки Выбора ###############################################################
+
+define gui.horizontal_choice_button_width = 1920
+define gui.horizontal_choice_button_height = gui.choice_button_height
+define gui.horizontal_choice_button_tile = gui.choice_button_tile
+define gui.horizontal_choice_button_borders = gui.choice_button_borders
+define gui.horizontal_choice_button_text_font = gui.choice_button_text_font
+define gui.horizontal_choice_button_text_size = gui.choice_button_text_size
+define gui.horizontal_choice_button_text_xalign = gui.choice_button_text_xalign
+define gui.horizontal_choice_button_text_idle_color = gui.choice_button_text_idle_color
+define gui.horizontal_choice_button_text_hover_color = gui.choice_button_text_hover_color
+define gui.horizontal_choice_button_text_insensitive_color = gui.choice_button_text_insensitive_color
 
 
 ## Кнопки Слотов ###############################################################
