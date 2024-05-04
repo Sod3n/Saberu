@@ -14,7 +14,32 @@ init -100 python:
         "pressure_hit": "Броситься впёред",
         "short_hit": "Свершить атаку",
         "wait": "Ожидать лучшей возможности",
-        "shoot": "Нанести гига атаку"
+        "shoot": "Нанести гига атаку",
+        "dash": "Сделать рывок вперёд",
+        "heal_rebound": "Отступает и начинает произносить заклинание",
+        "counter_attack": "Нанести ответный удар",
+        "heal_prepare": "Готовится произнести восстанавливающие заклинание",
+        "heal": "Восстанавливает здоровья",
+        "throw": "Выполнить бросок"
+    }
+
+    minigame_actions_past = {
+        "block": "Принял защитную стойку.",
+        "dodge": "Увернулся.",
+        "hard_hit": "Ударил в полную силу.",
+        "jab": "Отступил пронзая колющим ударом.",
+        "parry": "Сделал шаг вперёд, парируя.",
+        "pressure_hit": "Бросился впёред.",
+        "short_hit": "Свершил атаку.",
+        "wait": "Ожидает лучшей возможности.",
+        "shoot": "Использовал до чёртикво нечестную атаку.",
+        "dash": "Сделал рывок вперёд.",
+        "heal_rebound": "Отступает и начинает произносить заклинание.",
+        "rebound": "Тактически отскакивает.",
+        "counter_attack": "Наносит ответный удар.",
+        "heal_prepare": "Готовится произнести восстанавливающие заклинание.",
+        "heal": "Восстанавливает свои силы и готов атаковать вновь.",
+        "throw": "Быстро отскакивает и использует дальнию атаку."
     }
 
     def to_tuple(action):
@@ -44,10 +69,10 @@ init -100 python:
         e.is_last_was_crit = False
 
         if p.make_move_action(e):
-            player(minigame_actions[p.action])
+            player(minigame_actions_past[p.action])
 
         if e.make_move_action(p):
-            enemy(minigame_actions[e.action])
+            enemy(minigame_actions_past[e.action])
 
         p.move_to_next_pos(e)
         if e.move_to_blocked_pos(p):
@@ -66,29 +91,46 @@ init -100 python:
             player("Враг прижат к стенке. Ещё чуть-чуть...")
 
         if p.make_def_action(e):
-            player(minigame_actions[p.action])
+            player(minigame_actions_past[p.action])
 
         if e.make_def_action(p):
-            enemy(minigame_actions[e.action])
+            enemy(minigame_actions_past[e.action])
 
         if p.make_attack_action(e):
-            player(minigame_actions[p.action])
+            player(minigame_actions_past[p.action])
 
         if e.is_last_was_crit:
             narrator("Удар оказался сокрушительным.")
 
+        print(store.damaged_positions)
+        damaged_positions.clear()
+
+        if e.health <= 0:
+            renpy.hide_screen("minigame")
+            config.rollback_enabled = True
+            config.hard_rollback_limit = store.minigame_saved_rollback_limit
+            renpy.block_rollback()
+            renpy.jump(minigame_win_scene)
+            return
+            
+        
         if not p.is_in_balance:
             store.minigame_enemy_def_success = True
             player("Меня выбили из равновесия. Защита - единственный оставшийся вариант.")
 
         if e.make_attack_action(p):
-            enemy(minigame_actions[e.action])
+            enemy(minigame_actions_past[e.action])
 
         if p.is_last_was_crit:
             narrator("Удар оказался сокрушительным.")
         
         if not e.is_in_balance:
-            player("Кажется, враг потерял боевой потенциал. Нельзя останавливаться на этом")
+            player("Кажется, враг потерял боевой потенциал. Нельзя останавливаться на этом.")
+
+        print(store.damaged_positions)
+        damaged_positions.clear()
+        
+        defence_positions.clear()
 
         p.look_at(e)
         e.look_at(p)
@@ -104,13 +146,17 @@ init -100 python:
             renpy.hide_screen("minigame")
             config.rollback_enabled = True
             config.hard_rollback_limit = store.minigame_saved_rollback_limit
+            renpy.block_rollback()
             renpy.jump(minigame_lose_scene)
+            return
 
         if e.health <= 0:
             renpy.hide_screen("minigame")
             config.rollback_enabled = True
             config.hard_rollback_limit = store.minigame_saved_rollback_limit
+            renpy.block_rollback()
             renpy.jump(minigame_win_scene)
+            return
 
 
     def random_action(p, e):

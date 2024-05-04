@@ -24,8 +24,44 @@ init python:
     }
     minigame_saved_rollback_limit = 0
 
+    defence_positions = []
+
+    def defence_fade_function(trans, st, at, cpos):
+        a = 0.0
+
+        if cpos in defence_positions:
+            a = 1
+
+        trans.alpha = a
+        return 0.1
+
+    defence_cells = []
+
+    def_func = renpy.curry(defence_fade_function)
+    for i in range(1, 9):
+        defence_cells.append(Transform(Image("defence_cell.png"), function = def_func(cpos = i))) 
+
+
+    damaged_positions = []
+
+    def damage_fade_function(trans, st, at, cpos):
+        a = 0.0
+
+        if cpos in damaged_positions:
+            a = 1.0
+
+        trans.alpha = a
+        return 0.1
+    
+    damage_cells = []
+    dmg_func = renpy.curry(damage_fade_function)
+    for i in range(1, 9):
+        damage_cells.append(Transform(Image("damage_cell.png"), function = dmg_func(cpos = i))) 
 
 screen minigame:
+    add dictionary_notification:
+        ypos 400
+        yanchor 0.5
     add player_char
     add enemy_char
     for idi, i in enumerate(store.cell_positions):
@@ -35,20 +71,34 @@ screen minigame:
                 ypos store.cell_positions[i][1] + 120
                 yanchor 0.5
                 xanchor 0.5
-                zoom 2
         else:
             add "cell.png":
                 xpos store.cell_positions[i][0] 
                 ypos store.cell_positions[i][1] + 120
                 yanchor 0.5
                 xanchor 0.5
-                zoom 2
+
+        add store.damage_cells[idi]:
+            xpos store.cell_positions[i][0] 
+            ypos store.cell_positions[i][1] + 120
+            yanchor 0.5
+            xanchor 0.5
+
+        add store.defence_cells[idi]:
+            xpos store.cell_positions[i][0] 
+            ypos store.cell_positions[i][1] + 120
+            yanchor 0.5
+            xanchor 0.5
 
 label minigame_start:
     $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
     $ enemy_char = GCharacter((1920, 1080), "enemy.jpg", 6, "enemy2.jpg", "enemy3.jpg", 0.2)
-    $ minigame_used_pressure_hit_sequencly = 0
-    $ minigame_enemy_def_success = False
+    $ store.minigame_used_pressure_hit_sequencly = 0
+    $ store.minigame_enemy_def_success = False
+    $ store.minigame_enemy_last_health = 0
+    $ store.minigame_enemy_prepared_to_heal = False
+    $ defence_positions.clear()
+    $ damaged_positions.clear()
     $ do_action = False
     $ next_action = "parry"
     $ config.rollback_enabled = False

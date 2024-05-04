@@ -34,6 +34,7 @@ init -5 python:
         action = None
         
         is_last_was_crit = False
+        crit_chance = 5
 
 
         def __init__(self, size, character, position, lose_balance_character, in_danger_character, zoom = 1.0, **kwargs):
@@ -217,22 +218,30 @@ init -5 python:
                 return -1
             return 1
 
-        def take_damage(self, value, is_common = True):
-            if (self.is_invincible_to_common_damage and is_common) or self.is_invincible_to_damage:
+        def take_damage(self, value, is_common, e):
+            if self.is_invincible_to_damage:
                     return False
 
-            crit_chance = random.randint(0, 100)
-
-            if crit_chance >= 95:
+            crit_rand = random.randint(0, 100)
+            print(e.position)
+            if crit_rand >= 100 - e.crit_chance:
                 self.health -= value
                 self.is_last_was_crit = True
+
+            if self.is_invincible_to_common_damage and is_common:
+                value -= 1
+
             self.health -= value
 
             return True
 
-        def take_damage_at_position(self, value, position, is_common = True):
+        def set_crit_chance(self, value):
+            self.crit_chance = value
+
+        def take_damage_at_position(self, value, position, is_common, e):
+            store.damaged_positions.append(position)
             if self.position == position:
-                return self.take_damage(value, is_common)
+                return self.take_damage(value, is_common, e)
             return False
 
         def common_invincible(self):
@@ -260,6 +269,23 @@ init -5 python:
 
             if self.action == "short_hit":
                 self.set_next_position(self.next_position + 1 * self.forward())
+
+            if self.action == "dash":
+                self.set_next_position(self.next_position + 2 * self.forward())
+            
+            if self.action == "heal_rebound":
+                self.set_next_position(self.next_position + -2 * self.forward())
+                return True
+
+            if self.action == "rebound":
+                self.set_next_position(self.next_position + -2 * self.forward())
+                return True
+
+            if self.action == "counter_attack":
+                self.set_next_position(self.next_position + 1 * self.forward())
+
+            if self.action == "throw":
+                self.set_next_position(self.next_position + -1 * self.forward())
                 
             return False
 
@@ -268,21 +294,35 @@ init -5 python:
                 self.common_invincible()
                 return True
 
+            if self.action == "heal_prepare":
+                return True
+
             if self.action == "dodge":
                 self.off_balance_position = self.position + 1 * self.forward()
+                defence_positions.append(self.off_balance_position)
                 return True
 
             if self.action == "parry":
                 self.hard_invincible()
                 self.off_balance_position = self.position
+                defence_positions.append(self.off_balance_position)
                 return True
-                
+
+            if self.action == "dash":
+                self.off_balance_position = self.last_stable_position
+                defence_positions.append(self.off_balance_position)
+                return True
+
+            if self.action == "counter_attack":
+                self.off_balance_position = self.last_stable_position
+                defence_positions.append(self.off_balance_position)
+
             return False
 
         def make_attack_action(self, e):
             if self.action == "hard_hit":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(2, dmg_position, False)
+                e.take_damage_at_position(2, dmg_position, False, self)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
 
@@ -290,7 +330,7 @@ init -5 python:
 
             if self.action == "short_hit":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(1, dmg_position, True)
+                e.take_damage_at_position(1, dmg_position, True, self)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
                 return True
@@ -299,38 +339,68 @@ init -5 python:
                 damage_maked = False
                 print(self.last_stable_position)
                 print(self.position + 1 * self.forward())
-                for i in range(int(self.last_stable_position), int(self.position + 1 * self.forward()), self.forward()):
+                for i in range(int(self.last_stable_position), int(self.position), self.forward()):
                     dmg_position = i
-                    if e.take_damage_at_position(1, dmg_position, True):
+                    if e.take_damage_at_position(1, dmg_position, True, self):
                         damage_maked = True
                     if e.off_balance_position == dmg_position:
                         self.is_in_balance = False
                 
-
-                if (e.was_pushed or self.was_pushed) and not damage_maked:
-                    e.take_damage(1, True)
+                dmg_position = self.position + 1 * self.forward()
+                e.take_damage_at_position(1, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
                 
                 return True
 
             if self.action == "jab":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(1, dmg_position, True)
+                e.take_damage_at_position(1, dmg_position, True, self)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
 
                 dmg_position = self.position + 2 * self.forward()
-                e.take_damage_at_position(1, dmg_position, True)
+                e.take_damage_at_position(1, dmg_position, True, self)
                 if e.off_balance_position == dmg_position:
                     self.is_in_balance = False
                 return True
 
             if self.action == "shoot":
                 dmg_position = self.position + 1 * self.forward()
-                e.take_damage_at_position(3, dmg_position, False)
+                e.take_damage_at_position(3, dmg_position, False, self)
                 dmg_position = self.position + 2 * self.forward()
-                e.take_damage_at_position(3, dmg_position, False)
+                e.take_damage_at_position(3, dmg_position, False, self)
                 dmg_position = self.position + 3 * self.forward()
-                e.take_damage_at_position(3, dmg_position, False)
+                e.take_damage_at_position(3, dmg_position, False, self)
+                return True
+
+            if self.action == "counter_attack":
+                dmg_position = self.position + 1 * self.forward()
+                e.take_damage_at_position(1, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
+                return True
+            
+            if self.action == "heal" and e.health == store.minigame_enemy_last_health:
+                self.health += 2
+                return True
+
+            if self.action == "throw":
+                d = random.randint(1, 2)
+                dmg_position = self.position + 3 * self.forward()
+                e.take_damage_at_position(d, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
+
+                dmg_position = self.position + 4 * self.forward()
+                e.take_damage_at_position(d, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
+
+                dmg_position = self.position + 5 * self.forward()
+                e.take_damage_at_position(d, dmg_position, True, self)
+                if e.off_balance_position == dmg_position:
+                    self.is_in_balance = False
                 return True
 
             return False
