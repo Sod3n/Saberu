@@ -1,3 +1,10 @@
+define io = Character("Иошинори", color='#990066')
+define t = Character("Торговец", color='#990066')
+define raz = Character("Разбойник", color='#990066')
+define ts = Character("Цурубэ-отоси", color='#990066')
+define n = Character("Норайо", color='#990066')
+define roc = Character("Рокеро", color='#990066')
+define ch = Character("Чиаса", color='#990066')
 
 label start:
     $ minigame_win_scene = "win"
