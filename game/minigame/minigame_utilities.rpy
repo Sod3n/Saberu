@@ -23,6 +23,7 @@ init -100 python:
         "throw": "Выполнить бросок",
         "nettle_wait": "Грозно колебаться на ветру",
         "nettle_attack": "Грозно колебаться на ветру",
+        "wait_with_sake": "Отпить сакэ"
     }
 
     minigame_actions_past = {
@@ -43,7 +44,8 @@ init -100 python:
         "heal": "Восстанавливает свои силы и готов атаковать вновь.",
         "throw": "Быстро отскакивает и использует дальнию атаку.",
         "nettle_wait": "Грозно колеблится на ветру.",
-        "nettle_attack": "Неистово жалит руки."
+        "nettle_attack": "Неистово жалит руки.",
+        "wait_with_sake": "Отпивает сакэ. Это не очень хорошо сказывается на здоровье."
     }
 
     def to_tuple(action):
@@ -173,7 +175,7 @@ init -100 python:
                 filtered_actions.append(action_tuple)
 
         if len(filtered_actions) == 0:
-            filtered_actions.append(to_tuple("wait"))
+            filtered_actions.append(to_tuple("wait_with_sake"))
 
         return filtered_actions
     
@@ -240,7 +242,7 @@ init -100 python:
                 to_tuple("parry"), 
             ]
 
-        if action == "wait":
+        if action == "wait_with_sake":
             return [ 
                 to_tuple("block"), 
                 to_tuple("pressure_hit"), 

@@ -11,7 +11,19 @@ define audio.bgmus2 = "audio/bgmus2.mp3"
 define audio.bgmus2_2 = "audio/bgmus2_2.mp3"
 define audio.bgmus3 = "audio/bgmus3.mp3"
 
+screen notif_screen:
+    add dictionary_notification:
+        ypos 0
+        yanchor 0
+
 label start:
+
+    show screen notif_screen
+    $ add_to_dictionary("Фраза 1 - это определенно фраза")
+    "Фраза 1"
+    $ add_to_dictionary("Фраза 2 - это определенно фраза")
+    "Фраза 2"
+
     $ minigame_win_scene = "win"
     $ minigame_lose_scene = "lose"
     menu:

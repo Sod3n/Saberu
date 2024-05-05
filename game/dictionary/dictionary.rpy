@@ -4,17 +4,11 @@ init python:
 
     is_dictionary_new_word = False
     last_word_added = -10000.0
-    is_dictionary_showed = False
-
-    def show_dictionary():
-        if store.is_dictionary_showed:
-            store.is_dictionary_showed = False
-            Show("dictionary_screen")
-        else:
-            store.is_dictionary_showed = True
-            Hide("dictionary_screen")
 
     def add_to_dictionary(statement):
+        if statement in store.dictionary_statement:
+            return
+
         store.dictionary_statement.append(statement)
         store.is_dictionary_new_word = True
     
@@ -25,12 +19,14 @@ init python:
 
         delay = st - store.last_word_added
 
+        print(delay)
+
         if delay <= 0.5:
-            xpos = (1920) - int(200 * delay / 0.5)
+            xpos = (1920) - int(400 * delay / 0.5)
         elif delay <= 3:
-            xpos = (1920 - 200)
+            xpos = (1920 - 400)
         elif delay <= 4:
-            xpos = (1920 - 200) + int(200 * (delay - 3) / 1)
+            xpos = (1920 - 400) + int(400 * (delay - 3) / 1)
         else:
             xpos = 1920
 
@@ -45,20 +41,22 @@ init python:
 screen dictionary_screen:
     tag menu
     key "dismiss" action NullAction()
-    frame:
-        background orange
-        ysize 980
-        xsize 1820
+    add "dictionart_background.png"
+    fixed:
+        ysize 650
+        xsize 1500 - 100
         xalign 0.5
         yalign 0.5
-        viewport id "vp":
-            draggable True
-            mousewheel True
-            vbox:
-                for i in store.dictionary_statement:
-                    text i
-
-        vbar value YScrollValue("vp"):
-            xalign 1.0
+        vbox:
+            text "{color=#1B1212}{size=64}{font=ofont.ru_ChinaCyr.ttf}Словарь{/font}{/size}{/color}":
+                xalign 0.5
+            viewport id "vp":
+                draggable True
+                mousewheel True
+                vbox:
+                    for i in store.dictionary_statement:
+                        text "{color=#1B1212}{size=24}{font=ofont.ru_ChinaCyr.ttf}"+i+"{/font}{/size}{/color}"
+                        fixed:
+                            ymaximum 20
 
         
