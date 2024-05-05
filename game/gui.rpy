@@ -33,7 +33,7 @@ define gui.idle_color = '#888888'
 
 ## Small_color используется в маленьком тексте, который должен быть ярче/темнее,
 ## для того, чтобы выделяться.
-define gui.idle_small_color = '#ffffff'
+define gui.idle_small_color = '#000'
 
 ## Цвет, используемых в кнопках и панелях, когда они наведены.
 define gui.hover_color = '#66c1e0'
@@ -52,8 +52,8 @@ define gui.muted_color = '#003d51'
 define gui.hover_muted_color = '#005b7a'
 
 ## Цвета, используемые в тексте диалогов и выборов.
-define gui.text_color = '#ffffff'
-define gui.interface_text_color = '#ffffff'
+define gui.text_color = '#000'
+define gui.interface_text_color = '#fff'
 
 
 ## Шрифты и их размеры #########################################################
@@ -109,7 +109,7 @@ define gui.textbox_yalign = 1.0
 ## Это могут быть целые значения в пикселях слева и сверху от начала окна или
 ## процентное отношение, например, 0.5 для центрирования.
 define gui.name_xpos = 385
-define gui.name_ypos = 0
+define gui.name_ypos = 10
 
 ## Горизонтальное выравнивание имени персонажа. Это может быть 0.0 для
 ## левоориентированного, 0.5 для центрированного и 1.0 для правоориентированного

@@ -2,7 +2,7 @@ label scene16_2:
     
     scene village1
     show SamuraiAngry at left
-	show SamuraiNPC at right
+    show SamuraiNPC at right
     roc "Господин, это здесь."
 
     n "Она не могла далеко уйти. Мы с Иошинори пойдем вверх по улице, а вы ищите ниже!"

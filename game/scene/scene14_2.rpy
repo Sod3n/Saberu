@@ -2,7 +2,7 @@ label scene14_2:
 
     scene mount1
     show SamuraiIdle at left
-	show SamuraiNPC at right
+    show SamuraiNPC at right
     n "Стой, демон. Назовись!"
     hide SamuraiIdle
     show SanuraiBow at left

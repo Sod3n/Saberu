@@ -1,18 +1,28 @@
-define io = Character("Иошинори", color='#990066')
-define t = Character("Торговец", color='#990066')
-define raz = Character("Разбойник", color='#990066')
-define ts = Character("Цурубэ-отоси", color='#990066')
-define n = Character("Норайо", color='#990066')
-define roc = Character("Рокеро", color='#990066')
-define ch = Character("Чиаса", color='#990066')
+define io = Character("Иошинори", color='#3E072C')
+define t = Character("Торговец", color='#3E072C')
+define raz = Character("Разбойник", color='#3E072C')
+define ts = Character("Цурубэ-отоси", color='#3E072C')
+define n = Character("Норайо", color='#3E072C')
+define roc = Character("Рокеро", color='#3E072C')
+define ch = Character("Чиаса", color='#3E072C')
 
 define audio.bgmus1 = "audio/bgmus1.mp3"
 define audio.bgmus2 = "audio/bgmus2.mp3"
 define audio.bgmus2_2 = "audio/bgmus2_2.mp3"
 define audio.bgmus3 = "audio/bgmus3.mp3"
 
-style say_label:
+image Bandit = "Bandit.png"
+image Merchant = "Merchant.png"
+image Merchant2 = "Merchant2.png"
+image Merchantflip = "Merchantflip.png"
+image SamuraiAngry = "SamuraiAngry.png"
+image SamuraiDrinking = "SamuraiDrinking.png"
+image SamuraiEat = "SamuraiEat.png"
+image SamuraiIdle = "SamuraiIdle.png"
+image SamuraiNPC = "SamuraiNPC.png"
+image SanuraiBow = "SanuraiBow.png"
 
+style say_label:
     bold True
 
 screen notif_screen:
@@ -21,7 +31,7 @@ screen notif_screen:
         yanchor 0
 
 label start:
-    #jump scene1
+    jump scene1
     show screen notif_screen
     $ add_to_dictionary("Фраза 1 - это определенно фраза")
     "Фраза 1"

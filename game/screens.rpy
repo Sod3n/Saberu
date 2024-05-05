@@ -237,19 +237,28 @@ screen horizontal_choice(items):
         yanchor 1.0
         ypos 0.7
         if next_action != None:
-            hbox:
-                xfill True
-                for i in get_actions_after_action(next_action):
-                    textbutton "{color=#BDBDBD}{size=24}{font=ofont.ru_ChinaCyr.ttf}" + i[0] + "{/font}{/size}{/color}":
-                        xanchor 0
-                        text_size 24
-                        xpadding 10
-                        xminimum int(1920 / len(get_actions_after_action(next_action)))
+            transform:
+                zoom 0.9
+                alpha 0.5
+                hbox:
+                    xfill True
+                    xalign 0.5
+                    for i in get_actions_after_action(next_action):
+                        textbutton "{color=#BDBDBD}{size=24}{font=ofont.ru_ChinaCyr.ttf}" + i[0] + "{/font}{/size}{/color}":
+                            background "gui/choice_idle_background_2.png"
+                            text_xalign 0.05
+                            text_ypos 15
+                            xanchor 0
+                            xpadding 10
+                            xminimum int(1920 / len(get_actions_after_action(next_action)))
                 
         hbox:
             xfill True
             for i in items:
                 textbutton "{color=#fff}{size=24}{font=ofont.ru_ChinaCyr.ttf}" + i.caption  + "{/font}{/size}{/color}" action i.action hovered SetScreenVariable("next_action", i[1].value) unhovered SetScreenVariable("next_action", None):
+                    background "gui/choice_idle_background_2.png"
+                    text_xalign 0.05
+                    text_ypos 15
                     xanchor 0
                     xminimum int(1920 / len(items))
                 null width 20

@@ -2,7 +2,7 @@ label scene15_2:
 
     scene home2
     show SamuraiDrinking at left
-	show SamuraiNPC at right
+    show SamuraiNPC at right
     n "Что ж, еще раз прошу прощения. Ты из столицы? Там сейчас служит и мой отец. Кем ты был?"
 
     io "Я был на службе у господина Минамото Ёритомо. Однако я решил восстановить додзё отца и сейчас направляюсь назад в Судзу."
