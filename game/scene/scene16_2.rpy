@@ -1,7 +1,8 @@
 label scene16_2:
     
     scene village1
-    
+    show SamuraiAngry at left
+	show SamuraiNPC at right
     roc "Господин, это здесь."
 
     n "Она не могла далеко уйти. Мы с Иошинори пойдем вверх по улице, а вы ищите ниже!"
@@ -38,6 +39,8 @@ label scene16_2:
 
     ch "Ах, какой же вы наивный. Неужели вы думаете, что сможете меня остановить?"
 
-    jump scene17_1
+    #тут могла быть боев очка
+
+    jump scene18_1
     
     return

@@ -6,6 +6,11 @@ define n = Character("Норайо", color='#990066')
 define roc = Character("Рокеро", color='#990066')
 define ch = Character("Чиаса", color='#990066')
 
+define audio.bgmus1 = "audio/bgmus1.mp3"
+define audio.bgmus2 = "audio/bgmus2.mp3"
+define audio.bgmus2_2 = "audio/bgmus2_2.mp3"
+define audio.bgmus3 = "audio/bgmus3.mp3"
+
 screen notif_screen:
     add dictionary_notification:
         ypos 0

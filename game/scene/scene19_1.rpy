@@ -1,5 +1,6 @@
 label scene19_1:
 
+    play music bgmus3
 
     "Больше нет ничего."
 
