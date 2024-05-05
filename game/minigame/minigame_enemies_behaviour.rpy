@@ -98,7 +98,6 @@ init -10 python:
             e.set_crit_chance(5)
             if e.is_in_balance:
                 e.set_crit_chance(100)
-                print(e.crit_chance)
 
             if not e.is_in_danger and p.distance_to(e) < 3:
                 return "rebound"

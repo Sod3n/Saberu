@@ -119,7 +119,7 @@ init -100 python:
         if e.is_last_was_crit:
             narrator("Удар оказался сокрушительным.")
 
-        print(store.damaged_positions)
+
         damaged_positions.clear()
 
         if e.health <= 0:
@@ -144,7 +144,7 @@ init -100 python:
         if not e.is_in_balance:
             player("Кажется, враг потерял боевой потенциал. Нельзя останавливаться на этом.")
 
-        print(store.damaged_positions)
+
         damaged_positions.clear()
         
         defence_positions.clear()
