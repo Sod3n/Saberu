@@ -35,9 +35,10 @@ init -5 python:
         
         is_last_was_crit = False
         crit_chance = 5
+        is_reversed = False
 
 
-        def __init__(self, size, character, position, lose_balance_character, in_danger_character, zoom = 1.0, **kwargs):
+        def __init__(self, size, character, position, lose_balance_character, in_danger_character, is_reversed, zoom = 1.0, **kwargs):
 
             # Pass additional properties on to the renpy.Displayable
             # constructor.
@@ -53,6 +54,7 @@ init -5 python:
             self.zoom = zoom
             self.lose_balance_character = renpy.displayable(lose_balance_character)
             self.in_danger_character = renpy.displayable(in_danger_character)
+            self.is_reversed = is_reversed
 
             self.char_width, self.char_height = renpy.image_size(character)
 
@@ -74,20 +76,22 @@ init -5 python:
 
             # Create a render from the health_image.
             health_image_render = renpy.render(ht, width, height, st, at)
+        
+            lbt = Transform(child=self.lose_balance_character)
 
-            if not self.is_in_balance:
-                ct = Transform(child=self.lose_balance_character)
-            elif self.is_in_danger:
+            if self.is_in_danger:
                 ct = Transform(child=self.in_danger_character)
             else:
                 ct = Transform(child=self.character)
             
+            lbt.zoom = self.zoom
             ct.zoom = self.zoom
 
-            if(self.look_direction == GCharacter.LookDirection.LEFT):
+            if((self.look_direction == GCharacter.LookDirection.LEFT and not self.is_reversed) or (self.look_direction == GCharacter.LookDirection.RIGHT and self.is_reversed)):
                 ct.xzoom = -1.0
 
             character_render = renpy.render(ct, width, height, st, at)
+            balance_render = renpy.render(lbt, width, height, st, at)
 
             # Create the render we will return.
             render = renpy.Render(self.width, self.height)
@@ -96,11 +100,14 @@ init -5 python:
             x -= self.char_width / 2 * self.zoom
             y -= self.char_height / 2 * self.zoom
             # Blit (draw) the health_image's render to our render.
-            render.blit(health_image_render, (x + 100 * self.zoom, y - 70 * self.zoom))
+            render.blit(health_image_render, (x + 50 * self.zoom, y - 120 * self.zoom))
 
             
             # Blit (draw) the health_image's render to our render.
             render.blit(character_render, (x, y))
+
+            if not self.is_in_balance:
+                render.blit(balance_render, (x, y + 200 * self.zoom))
             
             # Return the render.
             return render

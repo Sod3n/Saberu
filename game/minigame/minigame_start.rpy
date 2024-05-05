@@ -6,8 +6,6 @@ init python:
     import random
     
     random_first_aciton = random.choice(minigame_actions_tuple)[1]
-    player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
-    enemy_char = GCharacter((1920, 1080), "enemy.jpg", 6, "enemy2.jpg", "enemy3.jpg", 0.2)
     do_action = False
 
     next_action = "parry"
@@ -58,7 +56,15 @@ init python:
     for i in range(1, 9):
         damage_cells.append(Transform(Image("damage_cell.png"), function = dmg_func(cpos = i))) 
 
+    minigame_back = Solid("#000")
+
 screen minigame:
+
+    transform:
+        image minigame_back
+        matrixcolor BrightnessMatrix(-0.15)
+        blur 30.0
+        
     add player_char
     add enemy_char
     for idi, i in enumerate(store.cell_positions):
@@ -107,8 +113,7 @@ screen minigame:
             zoom 0.2
 
 label minigame_start:
-    $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)
-    $ enemy_char = GCharacter((1920, 1080), "enemy.jpg", 6, "enemy2.jpg", "enemy3.jpg", 0.2)
+    $ player_char = GCharacter((1920, 1080), "SamuraiDrinking.png", 3, "not_in_balance.png", "SamuraiDrinking.png", False, 0.13)
     $ store.minigame_used_pressure_hit_sequencly = 0
     $ store.minigame_enemy_def_success = False
     $ store.minigame_enemy_last_health = 0

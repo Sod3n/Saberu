@@ -249,11 +249,11 @@ screen horizontal_choice(items):
                             text_xalign 0.05
                             text_ypos 15
                             xanchor 0
-                            xpadding 10
                             xminimum int(1920 / len(get_actions_after_action(next_action)))
                 
         hbox:
             xfill True
+            xalign 0.5
             for i in items:
                 textbutton "{color=#fff}{size=24}{font=ofont.ru_ChinaCyr.ttf}" + i.caption  + "{/font}{/size}{/color}" action i.action hovered SetScreenVariable("next_action", i[1].value) unhovered SetScreenVariable("next_action", None):
                     background "gui/choice_idle_background_2.png"
@@ -261,7 +261,6 @@ screen horizontal_choice(items):
                     text_ypos 15
                     xanchor 0
                     xminimum int(1920 / len(items))
-                null width 20
 
 style horizontal_choice_hbox is hbox
 style horizontal_choice_button is button

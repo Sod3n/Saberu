@@ -11,6 +11,8 @@ define audio.bgmus2 = "audio/bgmus2.mp3"
 define audio.bgmus2_2 = "audio/bgmus2_2.mp3"
 define audio.bgmus3 = "audio/bgmus3.mp3"
 
+define config.gl2 = True
+
 image Bandit = "Bandit.png"
 image Merchant = "Merchant.png"
 image Merchant2 = "Merchant2.png"
@@ -31,8 +33,9 @@ screen notif_screen:
         yanchor 0
 
 label start:
-    jump scene1
     show screen notif_screen
+    $ player = io
+    jump scene1
     $ add_to_dictionary("Фраза 1 - это определенно фраза")
     "Фраза 1"
     $ add_to_dictionary("Фраза 2 - это определенно фраза")

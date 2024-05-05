@@ -1,4 +1,6 @@
 label scene3_1:
+    "Разбойник начинает убегать. Он седлает своего коня и скрывается в лесной чаще."
+    hide SamuraiAngry
 
     show Merchant at right
     show SamuraiIdle at left

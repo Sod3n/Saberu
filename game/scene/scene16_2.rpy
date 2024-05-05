@@ -39,8 +39,13 @@ label scene16_2:
 
     ch "Ах, какой же вы наивный. Неужели вы думаете, что сможете меня остановить?"
 
-    #тут могла быть боев очка
-
-    jump scene18_1
+    $ minigame_win_scene = "scene18_1"
+    $ minigame_lose_scene = "lose"
+    $ store.minigame_enemy_behaviour = random.randint(1, 7)
+    $ enemy_char = GCharacter((1920, 1080), "head.png", 6, "not_in_balance.png", "head.png", True, 0.13)
+    $ enemy = ch
+    $ minigame_back = "village1.png"
+    $ io(minigame_enemy_behaviour_reaction[store.minigame_enemy_behaviour])
+    jump minigame_start
     
     return

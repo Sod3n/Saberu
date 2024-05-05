@@ -58,7 +58,7 @@ screen dictionary_screen:
                 mousewheel True
                 vbox:
                     for i in store.dictionary_statement:
-                        text "{color=#1B1212}{size=24}{font=ofont.ru_ChinaCyr.ttf}"+i+"{/font}{/size}{/color}"
+                        text "{color=#1B1212}{size=32}{font=Neucha-Regular.ttf}"+i+"{/font}{/size}{/color}"
                         fixed:
                             ymaximum 20
 

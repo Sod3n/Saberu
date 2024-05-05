@@ -17,9 +17,14 @@ label scene2:
             io "Неужели ты обвиняешь сёгуна в бездействии своим грязным языком?"
             raz "Что? А ты еще кто?.."
             io "Как самурай я должен пресечь подобное поведение. Вы либо глупцы, либо уверены в своей победе. Что ж, поплатись за свою беспечность."
-            "Разбойник начинает убегать. Он седлает своего коня и скрывается в лесной чаще."
-            hide SamuraiAngry
-            jump scene3_1
+            $ minigame_win_scene = "scene3_1"
+            $ minigame_lose_scene = "lose"
+            $ store.minigame_enemy_behaviour = 0
+            $ enemy_char = GCharacter((1920, 1080), "Bandit.png", 6, "not_in_balance.png", "Bandit.png", True, 0.13)
+            $ enemy = raz
+            $ minigame_back = "les1.png"
+            $ io(minigame_enemy_behaviour_reaction[store.minigame_enemy_behaviour])
+            jump minigame_start
         "Пройти мимо":
             raz "Ну, чего ты уставился на меня? Мои ребята погибают защищая тебя, а ты не можешь просто поделиться?"
             raz "Нам тут вот, видишь ли, плохо платят. Да, да, и ты оттуда же. Да это все равно что испортить урожай риса!"
