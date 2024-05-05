@@ -40,9 +40,12 @@ init python:
 
 screen dictionary_screen:
     tag menu
-    key "dismiss" action NullAction()
+    zorder 10
+    dismiss action Hide("dictionary_screen", Dissolve(0.3))
     add "dictionart_background.png"
-    fixed:
+    window id "dictionary_window":
+        background None
+        modal True
         ysize 650
         xsize 1500 - 100
         xalign 0.5
