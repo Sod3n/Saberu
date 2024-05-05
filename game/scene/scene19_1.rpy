@@ -1,5 +1,5 @@
 label scene19_1:
-
+    scene villagelast
     play music bgmus3
 
     "Больше нет ничего."
