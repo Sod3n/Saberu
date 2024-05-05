@@ -2,12 +2,13 @@ label scene14_2:
 
     scene mount1
     show SamuraiIdle at left
-    show SamuraiNPC at right
+    show SamuraiNPCFight at right
     n "Стой, демон. Назовись!"
     hide SamuraiIdle
     show SanuraiBow at left
     io "Я не демон. Меня зовут Иошинори. Я иду из столицы в Судзу."
-
+    hide SamuraiNPCFight
+    show SamuraiNPC at right
     n "Прошу прощения. Самурай не должен терять хладнокровия. Больше такого не повторится."
 
     n "Приятно познакомиться, Иошинори. Меня зовут Норайо. Я понимаю, что оказанный мной прием не был теплым, но могу ли я попросить тебя о помощи?"
