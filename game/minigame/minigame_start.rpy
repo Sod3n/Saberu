@@ -113,6 +113,7 @@ screen minigame:
             zoom 0.2
 
 label minigame_start:
+    play music bgmus2_2
     $ player_char = GCharacter((1920, 1080), "SamuraiDrinking.png", 3, "not_in_balance.png", "SamuraiDrinking.png", False, 0.13)
     $ store.minigame_used_pressure_hit_sequencly = 0
     $ store.minigame_enemy_def_success = False

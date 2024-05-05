@@ -26,6 +26,7 @@ image SamuraiNPCFight = "SamuraiNPCFight.png"
 image SanuraiBow = "SanuraiBow.png"
 image rokuidle = "rokuidle.png"
 image rokuevil = "rokuevil.png"
+image Servant = "Servant.png"
 
 style say_label:
     bold True

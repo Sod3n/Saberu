@@ -165,6 +165,7 @@ init -100 python:
             config.hard_rollback_limit = store.minigame_saved_rollback_limit
             renpy.block_rollback()
             renpy.jump(minigame_lose_scene)
+            renpy.music.play(bgmus1)
             return
 
         if e.health <= 0:
@@ -173,6 +174,7 @@ init -100 python:
             config.hard_rollback_limit = store.minigame_saved_rollback_limit
             renpy.block_rollback()
             renpy.jump(minigame_win_scene)
+            renpy.music.stop()
             return
 
 
