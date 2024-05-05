@@ -22,7 +22,10 @@ image SamuraiDrinking = "SamuraiDrinking.png"
 image SamuraiEat = "SamuraiEat.png"
 image SamuraiIdle = "SamuraiIdle.png"
 image SamuraiNPC = "SamuraiNPC.png"
+image SamuraiNPCFight = "SamuraiNPCFight.png"
 image SanuraiBow = "SanuraiBow.png"
+image rokuidle = "rokuidle.png"
+image rokuevil = "rokuevil.png"
 
 style say_label:
     bold True
