@@ -294,7 +294,7 @@ screen quick_menu():
             textbutton _("Сохранить") action ShowMenu('save')
             textbutton _("Б.Сохр") action QuickSave()
             textbutton _("Б.Загр") action QuickLoad()
-            textbutton _("Словарь") action If(renpy.get_screen("dictionary_screen"), true=Hide("dictionary_screen"), false=Show("dictionary_screen"))
+            textbutton _("Словарь") action If(renpy.get_screen("dictionary_screen"), true=[Hide("dictionary_screen", Dissolve(0.3))], false=[Show("dictionary_screen", Dissolve(0.3))])
 
 
 ## Данный код гарантирует, что экран быстрого меню будет показан в игре в любое

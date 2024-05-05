@@ -59,36 +59,52 @@ init python:
         damage_cells.append(Transform(Image("damage_cell.png"), function = dmg_func(cpos = i))) 
 
 screen minigame:
-    add dictionary_notification:
-        ypos 400
-        yanchor 0.5
     add player_char
     add enemy_char
     for idi, i in enumerate(store.cell_positions):
-        if idi < 2 or idi > 5:
+        if idi == 0:
+            add "left_cell.png":
+                xpos store.cell_positions[i][0] 
+                ypos store.cell_positions[i][1] - 45
+                yanchor 1
+                xanchor 0.5
+                zoom 0.22
+        elif idi == 7:
+            add "right_cell.png":
+                xpos store.cell_positions[i][0] 
+                ypos store.cell_positions[i][1] - 45
+                yanchor 1
+                xanchor 0.5
+                zoom 0.22
+        elif idi < 2 or idi > 5:
             add "edge_cell.png":
                 xpos store.cell_positions[i][0] 
-                ypos store.cell_positions[i][1] + 120
-                yanchor 0.5
+                ypos store.cell_positions[i][1] - 45
+                yanchor 1
                 xanchor 0.5
+                zoom 0.22
         else:
             add "cell.png":
                 xpos store.cell_positions[i][0] 
-                ypos store.cell_positions[i][1] + 120
-                yanchor 0.5
+                ypos store.cell_positions[i][1] - 45
+                yanchor 1
                 xanchor 0.5
+                zoom 0.22
+
 
         add store.damage_cells[idi]:
             xpos store.cell_positions[i][0] 
-            ypos store.cell_positions[i][1] + 120
-            yanchor 0.5
+            ypos store.cell_positions[i][1] - 55
+            yanchor 1
             xanchor 0.5
+            zoom 0.22
 
         add store.defence_cells[idi]:
             xpos store.cell_positions[i][0] 
-            ypos store.cell_positions[i][1] + 120
-            yanchor 0.5
+            ypos store.cell_positions[i][1] - 35
+            yanchor 1
             xanchor 0.5
+            zoom 0.2
 
 label minigame_start:
     $ player_char = GCharacter((1920, 1080), "sprite.png", 3, "sprite2.png", "sprite3.png", 0.2)

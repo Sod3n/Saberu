@@ -414,6 +414,15 @@ init -5 python:
                     self.is_in_balance = False
                 return True
 
+            if self.action == "wait_with_sake":
+                minus_cr_ch = random.randint(0, 100)
+                if minus_cr_ch >= 100 - 25:
+                    self.is_last_was_crit = True
+                    self.health -= 4
+
+                self.health -=1
+                return True
+
             return False
                 
         def can_perform_action(self, action, e):
