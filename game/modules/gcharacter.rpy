@@ -230,7 +230,7 @@ init -5 python:
                     return False
 
             crit_rand = random.randint(0, 100)
-            print(e.position)
+
             if crit_rand >= 100 - e.crit_chance:
                 self.health -= value
                 self.is_last_was_crit = True
@@ -355,8 +355,7 @@ init -5 python:
 
             if self.action == "pressure_hit":
                 damage_maked = False
-                print(self.last_stable_position)
-                print(self.position + 1 * self.forward())
+
                 for i in range(int(self.last_stable_position), int(self.position), self.forward()):
                     dmg_position = i
                     if e.take_damage_at_position(1, dmg_position, True, self):

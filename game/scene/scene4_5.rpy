@@ -30,7 +30,7 @@ label scene4_5:
             $ minigame_win_scene = "scene5_5"
             $ minigame_lose_scene = "lose"
             $ store.minigame_enemy_behaviour = random.randint(1, 7)
-            $ enemy_char = GCharacter((1920, 1080), "head.png", 6, "not_in_balance.png", "head.png", True, 0.13)
+            $ enemy_char = GCharacter((1920, 1080), "head.png", 6, "not_in_balance.png", "head.png", True, 0.35)
             $ enemy = ts
             $ minigame_back = "three1.png"
             $ io(minigame_enemy_behaviour_reaction[store.minigame_enemy_behaviour])

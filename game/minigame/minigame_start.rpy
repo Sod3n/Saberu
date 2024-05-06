@@ -11,14 +11,14 @@ init python:
     next_action = "parry"
 
     cell_positions = {
-        1: (540, 150),
-        2: (660, 150),
-        3: (780, 150),
-        4: (900, 150),
-        5: (1020, 150),
-        6: (1140, 150),
-        7: (1260, 150),
-        8: (1380, 150)
+        1: (201, 300),
+        2: (418, 300),
+        3: (635, 300),
+        4: (852, 300),
+        5: (1069, 300),
+        6: (1286, 300),
+        7: (1503, 300),
+        8: (1720, 300)
     }
     minigame_saved_rollback_limit = 0
 
@@ -74,28 +74,28 @@ screen minigame:
                 ypos store.cell_positions[i][1] - 45
                 yanchor 1
                 xanchor 0.5
-                zoom 0.22
+                zoom 0.43
         elif idi == 7:
             add "right_cell.png":
                 xpos store.cell_positions[i][0] 
                 ypos store.cell_positions[i][1] - 45
                 yanchor 1
                 xanchor 0.5
-                zoom 0.22
+                zoom 0.43
         elif idi < 2 or idi > 5:
             add "edge_cell.png":
                 xpos store.cell_positions[i][0] 
                 ypos store.cell_positions[i][1] - 45
                 yanchor 1
                 xanchor 0.5
-                zoom 0.22
+                zoom 0.43
         else:
             add "cell.png":
                 xpos store.cell_positions[i][0] 
                 ypos store.cell_positions[i][1] - 45
                 yanchor 1
                 xanchor 0.5
-                zoom 0.22
+                zoom 0.43
 
 
         add store.damage_cells[idi]:
@@ -103,18 +103,18 @@ screen minigame:
             ypos store.cell_positions[i][1] - 55
             yanchor 1
             xanchor 0.5
-            zoom 0.22
+            zoom 0.43
 
         add store.defence_cells[idi]:
             xpos store.cell_positions[i][0] 
             ypos store.cell_positions[i][1] - 35
             yanchor 1
             xanchor 0.5
-            zoom 0.2
+            zoom 0.43
 
 label minigame_start:
     play music bgmus2_2
-    $ player_char = GCharacter((1920, 1080), "SamuraiDrinking.png", 3, "not_in_balance.png", "SamuraiDrinking.png", False, 0.13)
+    $ player_char = GCharacter((1920, 1080), "SamuraiDrinking.png", 3, "not_in_balance.png", "SamuraiDrinking.png", False, 0.35)
     $ store.minigame_used_pressure_hit_sequencly = 0
     $ store.minigame_enemy_def_success = False
     $ store.minigame_enemy_last_health = 0

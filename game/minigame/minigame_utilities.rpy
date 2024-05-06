@@ -114,6 +114,7 @@ init -100 python:
             enemy(minigame_actions_past[e.action])
 
         if p.make_attack_action(e):
+            renpy.play("audio/Fight_SFX_Slice_1-_no-blood_.ogg")
             player(minigame_actions_past[p.action])
 
         if e.is_last_was_crit:
@@ -136,6 +137,7 @@ init -100 python:
             player("Меня выбили из равновесия. Защита - единственный оставшийся вариант.")
 
         if e.make_attack_action(p):
+            renpy.play("audio/Fight_SFX_Slice_1-_no-blood_.ogg")
             enemy(minigame_actions_past[e.action])
 
         if p.is_last_was_crit:
@@ -195,12 +197,12 @@ init -100 python:
     is_show_next_actions = False
 
     def show_next_actions(action):
-        print("HOVERED")
+
         if store.is_show_next_actions == False:
             store.is_show_next_actions = True
     
     def hide_next_actions(action):
-        print("UNHOVERED")
+
         if store.is_show_next_actions == True:
             store.is_show_next_actions = False
 

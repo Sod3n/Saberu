@@ -20,7 +20,7 @@ label scene2:
             $ minigame_win_scene = "scene3_1"
             $ minigame_lose_scene = "lose"
             $ store.minigame_enemy_behaviour = 0
-            $ enemy_char = GCharacter((1920, 1080), "Bandit.png", 6, "not_in_balance.png", "Bandit.png", True, 0.13)
+            $ enemy_char = GCharacter((1920, 1080), "Bandit.png", 6, "not_in_balance.png", "Bandit.png", True, 0.35)
             $ enemy = raz
             $ minigame_back = "les1.png"
             $ io(minigame_enemy_behaviour_reaction[store.minigame_enemy_behaviour])
