@@ -1,6 +1,6 @@
 label scene16_2:
     
-    scene village1
+    scene village2
     show SamuraiAngry at left
     show SamuraiNPC at right
     show Servant
